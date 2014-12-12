@@ -1,0 +1,9 @@
+{
+  "name": "puppet-yumgroup",
+  "version": "0.1.0",
+  "author": "Terri Haber",
+  "summary": "Provides yumgroup type for RHEL systems",
+  "license": "Apache 2.0",
+  "source": "git://github.com/terrimonster/puppet-yumgroup.git",
+  "project_page": "https://github.com/terrimonster/puppet-yumgroup"
+}

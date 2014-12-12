@@ -1,0 +1,3 @@
+yumgroup { 'Emacs':
+  ensure => present,
+}
