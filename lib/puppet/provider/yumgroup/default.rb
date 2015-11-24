@@ -30,7 +30,7 @@ Puppet::Type.type(:yumgroup).provide(:default) do
       end
 
       # turn on collecting when the 'Installed Groups:' is reached
-      collect_groups = true if line.chomp =~ /Installed Groups:/
+      collect_groups = true if line.chomp =~ /Installed Groups:/i
     end
     groups
   end
