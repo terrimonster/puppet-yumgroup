@@ -1,10 +1,21 @@
-Puppet::Type.type(:yumgroup).provide(:default) do
+Puppet::Type.type(:yumgroup).provide(:yum) do
   desc 'Support for managing the yum groups'
 
   commands :yum => '/usr/bin/yum'
 
-  # TODO
-  # find out how yum parses groups and reimplement that in ruby
+  defaultfor :osfamily => :redhat
+
+  def self.prefetch(resources)
+    instances.each do |prov|
+      if resource = resources[prov.name] || resources[prov.name.downcase]
+        resource.provider = prov
+      end
+    end
+  end
+
+  def exists?
+    @property_hash[:ensure] == :present
+  end
 
   def self.instances
     groups = []
@@ -16,7 +27,7 @@ Puppet::Type.type(:yumgroup).provide(:default) do
     collect_groups = false
 
     # loop through lines of yum output
-    yum_content.each do |line|
+    yum_content.lines.each do |line|
       # if we get to 'Available Groups:' string, break the loop
       break if line.chomp =~ /Available Groups:/
 
@@ -44,9 +55,4 @@ Puppet::Type.type(:yumgroup).provide(:default) do
     yum('-y', 'groupremove', @resource[:name])
     @property_hash[:ensure] == :absent
   end
-
-  def exists?
-    @property_hash[:ensure] == :absent
-  end
-
 end
